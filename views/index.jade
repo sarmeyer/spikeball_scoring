@@ -1,0 +1,15 @@
+extends layout
+
+block content
+	h1 Welcome to #{title}
+		h2 Input game record
+			form(action="/create", method="post")
+				label(for='teamName') Your team name
+				input(type="text" name="team1_name" placeholder='Your team name')
+				label(for='teamName') Opponents team name
+				input(type="text" name="team2_name" placeholder='Your team name')
+				label(for='team1_score') Your score
+				input(type="integer" name="team1_score" placeholder='Your score')
+				label(for='team2_score') Opponents score
+				input(type="integer" name="team2_score" placeholder='Opponents score')
+				input(type="submit" value='Submit')
