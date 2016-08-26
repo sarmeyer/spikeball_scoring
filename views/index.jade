@@ -2,14 +2,16 @@ extends layout
 
 block content
 	h1 Welcome to #{title}
-		h2 Input game record
-			form(action="/create", method="post")
-				label(for='teamName') Your team name
-				input(type="text" name="team1_name" placeholder='Your team name')
-				label(for='teamName') Opponents team name
-				input(type="text" name="team2_name" placeholder='Your team name')
-				label(for='team1_score') Your score
-				input(type="integer" name="team1_score" placeholder='Your score')
-				label(for='team2_score') Opponents score
-				input(type="integer" name="team2_score" placeholder='Opponents score')
-				input(type="submit" value='Submit')
+		h2 Only submit a game record once for each game
+			form(name='record' action="/create", method="post")
+				label(for='team1_id') Your team
+				select(name='team1_id')
+					for team in teams
+						option(value='#{team.id}') #{team.teamName} : #{team.id}
+				label(for='team2_id') Opponents team
+				select(name='team2_id')
+					for team in teams
+						option(value='#{team.id}') #{team.teamName}
+				input(type="number" name='#{team1_score}' placeholder="Your score")
+				input(type="number" name='#{team2_score}' placeholder="Their score")
+				input(type='submit' value='Submit')
