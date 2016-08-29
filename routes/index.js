@@ -23,13 +23,17 @@ router.post('/create', function(req, res, next) {
     team1_score: team1_score,
     team2_score: team2_score
   }).then(function() {
-    if (team1_score > team2_score) {
-      return knex('team_game_stats').where('team_id', team1_id).update('pointDiff', user1pts).then(function() {
-        return knex('team_game_stats').where('team_id', team2_id).update('pointDiff', user2pts).then(function() {
-          res.redirect('/');
+    return knex('team_game_stats').where('team_id', team1_id).select('pointDiff').first().then(function(results) {
+      return knex('team_game_stats').where('team_id', team2_id).select('pointDiff').then(function(results2) {
+        var pointDiff1 = results.pointDiff += user1pts;
+        var pointDiff2 = results2.pointDiff += user2pts;
+        return knex('team_game_stats').where('team_id', team1_id).update('pointDiff', pointDiff1).then(function() {
+          return knex('team_game_stats').where('team_id', team2_id).update('pointDiff', pointDiff2).then(function() {
+            res.redirect('/');
+          })
         })
       })
-    }
+    })
   })
 })
 
