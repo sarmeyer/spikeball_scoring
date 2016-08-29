@@ -24,10 +24,10 @@ router.post('/create', function(req, res, next) {
     team2_score: team2_score
   }).then(function() {
     return knex('team_game_stats').where('team_id', team1_id).select('pointDiff').first().then(function(results) {
-      return knex('team_game_stats').where('team_id', team2_id).select('pointDiff').then(function(results2) {
-        var pointDiff1 = results.pointDiff += user1pts;
-        var pointDiff2 = results2.pointDiff += user2pts;
-        return knex('team_game_stats').where('team_id', team1_id).update('pointDiff', pointDiff1).then(function() {
+      var pointDiff1 = results.pointDiff += user1pts;
+      return knex('team_game_stats').where('team_id', team1_id).update('pointDiff', pointDiff1).then(function() {
+        return knex('team_game_stats').where('team_id', team2_id).select('pointDiff').first().then(function(results2) {
+          var pointDiff2 = results2.pointDiff += user2pts;
           return knex('team_game_stats').where('team_id', team2_id).update('pointDiff', pointDiff2).then(function() {
             res.redirect('/');
           })
