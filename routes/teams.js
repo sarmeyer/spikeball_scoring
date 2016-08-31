@@ -30,7 +30,6 @@ router.get('/:teamid', function(req, res, next) {
           })
         })
       ).then(function(logs) {
-        console.log(logs);
         res.render('show', {
           logs: logs,
           team: team
