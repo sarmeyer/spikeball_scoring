@@ -1,23 +1,26 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+    padding: 50px;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
-
 a {
-  color: #00B7FF;
-}
-h2 {
+    color: #00B7FF;
 }
 form {
-  width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 20%;
 }
 label {
-  font-size: .5em;
+    font-size: 1.5em;
+    margin: 5%;
 }
-input {
-  margin: 5%;
+input, select {
+    margin: 5%;
+    height: 2em;
+    width: 12em;
 }
