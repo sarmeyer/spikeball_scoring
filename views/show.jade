@@ -14,4 +14,8 @@ block content
         tr
           td #{team.teamName}
           td #{log.opponent[0].teamName}
-          td #{log.team1_score} - #{log.team2_score}
+          if team.id === log.team1_id
+            td #{log.team1_score} - #{log.team2_score}
+          else 
+            td #{log.team2_score} - #{log.team1_score}
+    a.btn.btn-primary(href="/teams") Back
