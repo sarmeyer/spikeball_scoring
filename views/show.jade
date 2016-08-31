@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  h1 #{team.teamName} Stats
+  div
+  table.table.table-hover.table-bordered 
+    thead
+      tr
+        th Team name
+        th Opponent
+        th Score
+    tbody
+      each log in logs
+        tr
+          td #{team.teamName}
+          td #{log.opponent[0].teamName}
+          td #{log.team1_score} - #{log.team2_score}

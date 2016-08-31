@@ -2,17 +2,18 @@ extends layout
 
 block content
 	h1 Welcome to #{title}
-	a(href='/teams') View All Teams
+	h2 
+		a(href='/teams') View All Teams
 	h2 Only submit a game record once for each game
 	form(name='record' action="/create", method="post")
 		label(for='team1_id') Your team
-		select(name='team1_id')
+		select(name='team1_id' class='form-control')
 			for team in teams
 				option(value='#{team.id}') #{team.teamName}
 		label(for='team2_id') Opponents team
-		select(name='team2_id')
+		select(name='team2_id' class='form-control')
 			for team in teams
 				option(value='#{team.id}') #{team.teamName}
 		input(type="number" name='#{team1_score}' placeholder="Your score")
 		input(type="number" name='#{team2_score}' placeholder="Their score")
-		input(class='submitBtn' type='submit' value='Submit')
+		input(class='submitBtn btn btn-success' type='submit' value='Submit')

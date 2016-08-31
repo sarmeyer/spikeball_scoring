@@ -20,7 +20,8 @@ label {
     margin: 5%;
 }
 input, select {
-    margin: 5%;
     height: 2em;
-    width: 12em;
+}
+input {
+    margin: .8em !important;
 }

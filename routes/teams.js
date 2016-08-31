@@ -7,7 +7,7 @@ router.get('/', function(req, res, next) {
     Promise.all(
       teams.map(function(team) {
         return knex('team_game_stats').where('team_id', team.id).then(function(stats) {
-          team.stats = stats; //set property on team object to the stats data
+          team.stats = stats;
           return team;
         })
       })
@@ -17,6 +17,27 @@ router.get('/', function(req, res, next) {
       })
     })
   });
+})
+
+router.get('/:teamid', function(req, res, next) {
+  return knex('team_game_log').where('team1_id', req.params.teamid).then(function(logs) {
+    return knex('teams').where('id', req.params.teamid).first().then(function(team) {
+      Promise.all(
+        logs.map(function(log) {
+          return knex('teams').where('id', log.team2_id).then(function(opponent) {
+            log.opponent = opponent;
+            return log;
+          })
+        })
+      ).then(function(logs) {
+        console.log(logs);
+        res.render('show', {
+          logs: logs,
+          team: team
+        })
+      });
+    })
+  })
 })
 
 module.exports = router;
