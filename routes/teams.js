@@ -24,8 +24,6 @@ router.get('/:teamid', function(req, res, next) {
     return knex('teams').where('id', req.params.teamid).first().then(function(team) {
       Promise.all(
         logs.map(function(log) {
-          //if current team = team1 in log table
-          //opponent = team2 in log table - get team2 info from teams table
           if (Number(req.params.teamid) === log.team1_id) {
             return knex('teams').where('id', log.team2_id).then(function(opponent) {
               log.opponent = opponent;
