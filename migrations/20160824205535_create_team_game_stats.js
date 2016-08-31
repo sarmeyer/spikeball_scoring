@@ -1,7 +1,7 @@
 exports.up = function(knex, Promise) {
   return knex.schema.createTable('team_game_stats', function(t){
     t.increments().primary();
-    t.integer('team_id').references('teams.id');
+    t.integer('team_id');
     t.integer('wins');
     t.integer('losses');
     t.integer('pointDiff');
