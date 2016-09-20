@@ -16,6 +16,10 @@ block content
             a(href='/teams/#{team.id}') #{team.teamName}
           td #{team.stats[0].wins} : #{team.stats[0].losses}
           td #{team.stats[0].pointDiff}
+          if team.stats[0].wins > 0
+            td #{team.stats[0].wins/(team.stats[0].wins + team.stats[0].losses)*100}%
+          else
+            td 0%
       a.btn.btn-primary(href="/" class='backBtn') Back
 
             
