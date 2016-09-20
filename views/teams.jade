@@ -10,7 +10,7 @@ block content
         th Record (Wins:Losses)
         th Point Differential
         th Win Percentage
-        th Seed
+        th Total Points
     tbody
       each team in teams
         tr
@@ -22,6 +22,7 @@ block content
             td #{(team.stats[0].wins/(team.stats[0].wins + team.stats[0].losses)*100).toFixed()}%
           else
             td 0%
+          td #{team.stats[0].pointsFor + team.stats[0].pointsAgainst}
       a.btn.btn-primary(href="/" class='backBtn') Back
 
             

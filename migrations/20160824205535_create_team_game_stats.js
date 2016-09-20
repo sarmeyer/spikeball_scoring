@@ -5,6 +5,8 @@ exports.up = function(knex, Promise) {
     t.integer('wins');
     t.integer('losses');
     t.integer('pointDiff');
+    t.integer('pointsFor');
+    t.integer('pointsAgainst');
     t.timestamps();
   })
 };
