@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var knex = require('../db/knex');
+var Seeds = require('../lib/seedLogic.js');
 
 router.get('/', function(req, res, next) {
   return knex('teams').then(function(teams) {
@@ -12,6 +13,7 @@ router.get('/', function(req, res, next) {
         })
       })
     ).then(function(teams) {
+      var seed = Seeds.runSeed(teams);
       res.render('teams', {
         teams: teams
       })
