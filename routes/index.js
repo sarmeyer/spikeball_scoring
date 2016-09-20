@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var knex = require('../db/knex');
+var Seed = require('../lib/seedLogic');
 
 router.get('/', function(req, res, next) {
   return knex('teams').then(function(teams) {
@@ -22,20 +23,20 @@ router.post('/create', function(req, res, next) {
     return knex('team_game_stats').where('team_id', team1_id).select('pointDiff').first().then(function(results) {
       var pointDiff1 = results.pointDiff += user1pts;
       return knex('team_game_stats').where('team_id', team1_id).update('pointDiff', pointDiff1).then(function() {
-        return knex('team_game_stats').where('team_id', team1_id).select('pointsFor').first().then(function(data) {
-          var pointsFor1 = data.pointsFor += team1_score;
+        return knex('team_game_stats').where('team_id', team1_id).select('pointsFor').first().then(function(dataF) {
+          var pointsFor1 = dataF.pointsFor += team1_score;
           return knex('team_game_stats').where('team_id', team1_id).update('pointsFor', pointsFor1).then(function() {
-            return knex('team_game_stats').where('team_id', team1_id).select('pointsAgainst').first().then(function(data) {
-              var pointsAgainst1 = data.pointsAgainst += team2_score;
+            return knex('team_game_stats').where('team_id', team1_id).select('pointsAgainst').first().then(function(dataA) {
+              var pointsAgainst1 = dataA.pointsAgainst += team2_score;
               return knex('team_game_stats').where('team_id', team1_id).update('pointsAgainst', pointsAgainst1).then(function() {
                 return knex('team_game_stats').where('team_id', team2_id).select('pointDiff').first().then(function(results2) {
                   var pointDiff2 = results2.pointDiff += user2pts;
                   return knex('team_game_stats').where('team_id', team2_id).update('pointDiff', pointDiff2).then(function() {
-                    return knex('team_game_stats').where('team_id', team2_id).select('pointsFor').first().then(function(data) {
-                      var pointsFor2 = data.pointsFor += team2_score;
+                    return knex('team_game_stats').where('team_id', team2_id).select('pointsFor').first().then(function(data2F) {
+                      var pointsFor2 = data2F.pointsFor += team2_score;
                       return knex('team_game_stats').where('team_id', team2_id).update('pointsFor', pointsFor2).then(function() {
-                        return knex('team_game_stats').where('team_id', team1_id).select('pointsAgainst').first().then(function(data) {
-                          var pointsAgainst2 = data.pointsAgainst += team1_score;
+                        return knex('team_game_stats').where('team_id', team1_id).select('pointsAgainst').first().then(function(data2A) {
+                          var pointsAgainst2 = data2A.pointsAgainst += team1_score;
                           return knex('team_game_stats').where('team_id', team2_id).update('pointsAgainst', pointsAgainst2).then(function() {
                             res.redirect('/');
                           })
@@ -70,6 +71,21 @@ router.post('/create', function(req, res, next) {
         })
       })
     }
+    return knex('teams').then(function(teams) {
+      Promise.all(
+        teams.map(function(team) {
+          return knex('team_game_stats').where('team_id', team.id).then(function(stats) {
+            team.stats = stats;
+            return team;
+          })
+        })
+      ).then(function(teams) {
+        var seeds = Seed.runSeed(teams);
+        res.render('teams', {
+          teams: teams
+        })
+      })
+    });
   })
 })
 

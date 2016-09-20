@@ -13,7 +13,6 @@ router.get('/', function(req, res, next) {
         })
       })
     ).then(function(teams) {
-      var seed = Seeds.runSeed(teams);
       res.render('teams', {
         teams: teams
       })
