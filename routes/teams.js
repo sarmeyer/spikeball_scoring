@@ -7,7 +7,7 @@ router.get('/', function(req, res, next) {
   return knex('teams').then(function(teams) {
     Promise.all(
       teams.map(function(team) {
-        return knex('team_game_stats').where('team_id', team.id).then(function(stats) {
+        return knex('team_game_stats').where('team_id', team.id).orderBy('seed', 'desc').then(function(stats) {
           team.stats = stats;
           return team;
         })
