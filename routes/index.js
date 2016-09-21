@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var knex = require('../db/knex');
 var Seed = require('../lib/seedLogic');
+var getSeed = require('../lib/teamLogic');
+
 
 router.get('/', function(req, res, next) {
   return knex('teams').then(function(teams) {
@@ -38,7 +40,16 @@ router.post('/create', function(req, res, next) {
                         return knex('team_game_stats').where('team_id', team1_id).select('pointsAgainst').first().then(function(data2A) {
                           var pointsAgainst2 = data2A.pointsAgainst += team1_score;
                           return knex('team_game_stats').where('team_id', team2_id).update('pointsAgainst', pointsAgainst2).then(function() {
-                            res.redirect('/');
+                            return knex('team_game_stats').where('team_id', team1_id).then(function(team1_stats) {
+                              return knex('team_game_stats').where('team_id', team2_id).then(function(team2_stats) {
+                                var updatedSeed = getSeed.runMath(team1_stats[0], team2_stats[0]);
+                                return knex('team_game_stats').where('team_id', team1_id).update('seed', updatedSeed[0]).then(function(){
+                                  return knex('team_game_stats').where('team_id', team2_id).update('seed', updatedSeed[1]).then(function(){
+                                    res.redirect('/');
+                                  })
+                                })
+                              })
+                            })
                           })
                         })
                       })
@@ -71,21 +82,6 @@ router.post('/create', function(req, res, next) {
         })
       })
     }
-    return knex('teams').then(function(teams) {
-      Promise.all(
-        teams.map(function(team) {
-          return knex('team_game_stats').where('team_id', team.id).then(function(stats) {
-            team.stats = stats;
-            return team;
-          })
-        })
-      ).then(function(teams) {
-        var seeds = Seed.runSeed(teams);
-        res.render('teams', {
-          teams: teams
-        })
-      })
-    });
   })
 })
 
