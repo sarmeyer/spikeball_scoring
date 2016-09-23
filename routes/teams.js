@@ -7,17 +7,20 @@ router.get('/', function(req, res, next) {
   return knex('teams').then(function(teams) {
     Promise.all(
       teams.map(function(team) {
-        return knex('team_game_stats').where('team_id', team.id).orderBy('seed', 'desc').then(function(stats) {
+        return knex('team_game_stats').where('team_id', team.id).then(function(stats) {
           team.stats = stats;
           return team;
         })
       })
     ).then(function(teams) {
+      return knex('teams').join('team_game_stats', 'teams.id', '=', 'team_game_stats.team_id').select('teams.id', 'teams.teamName', 'team_game_stats.seed', 'team_game_stats.wins', 'team_game_stats.losses', 'team_game_stats.pointDiff').orderBy('seed', 'desc').then(function(stats1){
       res.render('teams', {
+        stats: stats1,
         teams: teams
       })
     })
   });
+  })
 })
 
 router.get('/:teamid', function(req, res, next) {

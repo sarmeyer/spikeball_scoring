@@ -12,15 +12,15 @@ block content
 				th Win Percentage
 				th Seed
 		tbody
-			each team in teams
+			each stat,index in stats
 				tr
 					td 
-						a(href='/teams/#{team.id}') #{team.teamName}
-					td #{team.stats[0].wins} : #{team.stats[0].losses}
-					td #{team.stats[0].pointDiff}
-					if team.stats[0].wins > 0
-						td #{(team.stats[0].wins/(team.stats[0].wins + team.stats[0].losses)*100).toFixed()}%
+						a(href='/teams/#{stat.id}') #{stat.teamName}
+					td #{stat.wins} : #{stat.losses}
+					td #{stat.pointDiff}
+					if stat.wins > 0
+						td #{(stat.wins/(stat.wins + stat.losses)*100).toFixed()}%
 					else
 						td 0%
-					td #{team.stats[0].seed}
+					td #{index+1}
 			a.btn.btn-primary(href="/" class='backBtn') Back
